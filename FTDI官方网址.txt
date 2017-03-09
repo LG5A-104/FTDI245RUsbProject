@@ -1,1 +1,2 @@
 http://www.ftdichip.com/Products/ICs/FT245R.htm
+https://github.com/LG5A-104/FTDI245RUsbProject.git
