@@ -1,0 +1,179 @@
+/*++
+
+Copyright (c) 2000  Future Technology Devices International Ltd.
+
+Module Name:
+
+    Ft245.h
+
+Abstract:
+
+    Native USB device driver for FTDI FT8U245
+    Driver-defined special IOCTL's    
+
+Environment:
+
+    kernel & user mode
+
+Revision History:
+
+    18/09/00    awm     Adapted from BULKUSB sample.
+
+--*/
+
+
+/*++
+
+Copyright (c) 1997-1998  Microsoft Corporation
+
+Module Name:
+
+    BulkUsb.h
+
+Abstract:
+
+    Driver-defined special IOCTL's    
+
+Environment:
+
+    Kernel & user mode
+
+Notes:
+
+  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+  KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
+  PURPOSE.
+
+  Copyright (c) 1997-1998 Microsoft Corporation.  All Rights Reserved.
+Revision History:
+
+	11/17/97: created
+
+--*/
+
+#ifndef FT245_H
+#define FT245_H
+
+
+typedef ULONG FTDI_HANDLE;
+
+//
+// Device status
+//
+enum FTDI_STATUS {
+    FTDI_OK,
+    FTDI_INVALID_HANDLE,
+    FTDI_DEVICE_NOT_FOUND,
+    FTDI_DEVICE_NOT_OPENED,
+    FTDI_IO_ERROR,
+    FTDI_INSUFFICIENT_RESOURCES,
+};
+
+
+#define FTDI_SUCCESS(status) ((status) == FTDI_OK)
+
+
+#define FT_IOCTL_INDEX  0x0000
+
+
+#define IOCTL_FT_GET_CONFIG_DESCRIPTOR  CTL_CODE(FILE_DEVICE_UNKNOWN,  \
+                                                 FT_IOCTL_INDEX,\
+                                                 METHOD_BUFFERED,  \
+                                                 FILE_ANY_ACCESS)
+                                                   
+#define IOCTL_FT_RESET_DEVICE           CTL_CODE(FILE_DEVICE_UNKNOWN,  \
+                                                 FT_IOCTL_INDEX+1,\
+                                                 METHOD_BUFFERED,  \
+                                                 FILE_ANY_ACCESS)                                                              
+                                                   
+#define IOCTL_FT_RESET_PIPE             CTL_CODE(FILE_DEVICE_UNKNOWN,  \
+                                                 FT_IOCTL_INDEX+2,\
+                                                 METHOD_BUFFERED,  \
+                                                 FILE_ANY_ACCESS)                                                           
+
+#define IOCTL_FT_INVALIDATE             CTL_CODE(FILE_DEVICE_UNKNOWN,  \
+                                                 FT_IOCTL_INDEX+3,\
+                                                 METHOD_BUFFERED,  \
+                                                 FILE_ANY_ACCESS)
+
+#define IOCTL_FT_READ_EE                CTL_CODE(FILE_DEVICE_UNKNOWN,  \
+                                                 FT_IOCTL_INDEX+32,\
+                                                 METHOD_BUFFERED,  \
+                                                 FILE_ANY_ACCESS)
+
+#define IOCTL_FT_WRITE_EE               CTL_CODE(FILE_DEVICE_UNKNOWN,  \
+                                                 FT_IOCTL_INDEX+33,\
+                                                 METHOD_BUFFERED,  \
+                                                 FILE_ANY_ACCESS)
+
+#define IOCTL_FT_ERASE_EE               CTL_CODE(FILE_DEVICE_UNKNOWN,  \
+                                                 FT_IOCTL_INDEX+34,\
+                                                 METHOD_BUFFERED,  \
+                                                 FILE_ANY_ACCESS)
+
+#define IOCTL_FT_SET_BAUD_RATE          CTL_CODE(FILE_DEVICE_UNKNOWN, \
+                                                 FT_IOCTL_INDEX+65, \
+                                                 METHOD_BUFFERED, \
+                                                 FILE_ANY_ACCESS)
+
+#define IOCTL_FT_SET_LINE_CONTROL       CTL_CODE(FILE_DEVICE_UNKNOWN, \
+                                                 FT_IOCTL_INDEX+67, \
+                                                 METHOD_BUFFERED, \
+                                                 FILE_ANY_ACCESS)
+
+#define IOCTL_FT_SET_TIMEOUTS           CTL_CODE(FILE_DEVICE_UNKNOWN, \
+                                                 FT_IOCTL_INDEX+71, \
+                                                 METHOD_BUFFERED, \
+                                                 FILE_ANY_ACCESS)
+
+#define IOCTL_FT_SET_FLOW_CONTROL       CTL_CODE(FILE_DEVICE_UNKNOWN, \
+                                                 FT_IOCTL_INDEX+89, \
+                                                 METHOD_BUFFERED, \
+                                                 FILE_ANY_ACCESS)
+
+#define IOCTL_FT_GET_MODEMSTATUS        CTL_CODE(FILE_DEVICE_UNKNOWN, \
+                                                 FT_IOCTL_INDEX+90, \
+                                                 METHOD_BUFFERED, \
+                                                 FILE_ANY_ACCESS)
+
+
+typedef struct _TFtWriteEeParams {
+	USHORT Address;
+	UCHAR lValue;
+	UCHAR hValue;
+} TFtWriteEeParams;
+
+
+//
+// This structure used to set read and write timeouts.
+//
+
+typedef struct _TFtTimeouts {
+    ULONG ReadTimeout;
+    ULONG WriteTimeout;
+} TFtTimeouts;
+
+
+//
+// This structure used to set line parameters.
+//
+
+typedef struct _TFtLineControl {
+    UCHAR StopBits;
+    UCHAR Parity;
+    UCHAR WordLength;
+} TFtLineControl;
+
+//
+// This structure used by IOCTL_FT_SET_BAUD_RATE
+//
+
+typedef struct _TFtBaudRate {
+    ULONG BaudRate;
+} TFtBaudRate;
+
+
+#endif // end, #ifndef FT245_H
+
+
